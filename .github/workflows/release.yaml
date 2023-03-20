@@ -17,8 +17,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends binfmt-support qemu-user-static
-      - run: ./build.sh && ls -la gosu*
-
+      - run: ./build.sh && ./sign.sh
+      - run: ls -la gosu-*
       - uses: actions/setup-go@v3
         with:
           go-version: 1.18
