@@ -2,8 +2,8 @@ name: Release
 
 on:
   push:
-    branches:
-      - main
+    tags:
+    - '*'
   workflow_dispatch:
 
 defaults:
@@ -26,8 +26,27 @@ jobs:
       - run: go install golang.org/x/vuln/cmd/govulncheck@9bf256343acc20d22586789d07aecf887d8a5aea
       # (update "go-version" above when updating this version)
       - run: for gosu in gosu-*; do govulncheck "$gosu"; done
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v3
+      # - name: Archive production artifacts
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: gosu-amd64
+      #     path: gosu-amd64
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: gosu-amd64
-          path: gosu-amd64
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: gosu-amd64
+          asset_name: gosu-amd64
+          #asset_content_type: application/zip
