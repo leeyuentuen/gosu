@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+defaults:
+  run:
+    shell: 'bash -Eeuo pipefail -x {0}'
+
+jobs:
+  test:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends binfmt-support qemu-user-static
+      - run: ./build.sh && ls -la gosu*
+
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
+      # https://github.com/golang/vuln/commits/master
+      # https://github.com/golang/vuln/releases
+      - run: go install golang.org/x/vuln/cmd/govulncheck@9bf256343acc20d22586789d07aecf887d8a5aea
+      # (update "go-version" above when updating this version)
+
+      - run: for gosu in gosu-*; do govulncheck "$gosu"; done
