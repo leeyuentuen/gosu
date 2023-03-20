@@ -35,34 +35,41 @@ _platformToOCI() {
 declare -A latest=()
 for variant in "${preferredOrder[@]}"; do
 	cat > "$variant.yml" <<-EOYAML
-		image: tianon/gosu:$variant
+	    #image: tianon/gosu:$variant
+		image: checkout-anywhere/gosu:$variant
 		manifests:
 	EOYAML
 	for arch in ${arches[$variant]}; do
 		platform="${platforms[$arch]}"
-		docker build --pull --platform "$platform" --tag "tianon/gosu:$variant-$arch" - < "Dockerfile.$variant"
+		#docker build --pull --platform "$platform" --tag "tianon/gosu:$variant-$arch" - < "Dockerfile.$variant"
+		docker build --pull --platform "$platform" --tag "checkout-anywhere/gosu:$variant-$arch" - < "Dockerfile.$variant"
 		: "${latest[$arch]:=$variant}"
 		platform="$(_platformToOCI "$platform")"
-		echo "  - { image: tianon/gosu:$variant-$arch, platform: $platform }" >> "$variant.yml"
+		#echo "  - { image: tianon/gosu:$variant-$arch, platform: $platform }" >> "$variant.yml"
+		echo "  - { image: checkout-anywhere/gosu:$variant-$arch, platform: $platform }" >> "$variant.yml"
 	done
 done
 
 cat > latest.yml <<-'EOYAML'
-	image: tianon/gosu:latest
+    #image: checkout-anywhere/gosu:latest
+	image: checkout-anywhere/gosu:latest
 	manifests:
 EOYAML
 mapfile -d '' sorted < <(printf '%s\0' "${!latest[@]}" | sort -z)
 for arch in "${sorted[@]}"; do
 	variant="${latest[$arch]}"
-	docker tag "tianon/gosu:$variant-$arch" "tianon/gosu:$arch"
+	#docker tag "tianon/gosu:$variant-$arch" "tianon/gosu:$arch"
+	docker tag "checkout-anywhere/gosu:$variant-$arch" "checkout-anywhere/gosu:$arch"
 	platform="$(_platformToOCI "${platforms[$arch]}")"
-	echo "  - { image: tianon/gosu:$arch, platform: $platform }" >> latest.yml
+	#echo "  - { image: tianon/gosu:$arch, platform: $platform }" >> latest.yml
+	echo "  - { image: checkout-anywhere/gosu:$arch, platform: $platform }" >> latest.yml
 done
 
 echo
 echo '$ # now:'
 echo
-echo '$ docker push --all-tags tianon/gosu'
+#echo '$ docker push --all-tags tianon/gosu'
+echo '$ docker push --all-tags checkout-anywhere/gosu'
 for variant in "${preferredOrder[@]}" latest; do
 	echo "\$ manifest-tool push from-spec $variant.yml"
 done
