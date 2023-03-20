@@ -3,19 +3,21 @@ set -Eeuo pipefail
 
 declare -A platforms=(
 	[amd64]='linux/amd64'
-	[arm32v5]='linux/arm/v5'
-	[arm32v6]='linux/arm/v6'
-	[arm32v7]='linux/arm/v7'
-	[arm64v8]='linux/arm64/v8'
-	[i386]='linux/386'
-	[mips64le]='linux/mips64le'
-	[ppc64le]='linux/ppc64le'
-	[s390x]='linux/s390x'
+	# [arm32v5]='linux/arm/v5'
+	# [arm32v6]='linux/arm/v6'
+	# [arm32v7]='linux/arm/v7'
+	# [arm64v8]='linux/arm64/v8'
+	# [i386]='linux/386'
+	# [mips64le]='linux/mips64le'
+	# [ppc64le]='linux/ppc64le'
+	# [s390x]='linux/s390x'
 )
 
 declare -A arches=(
-	[alpine]='amd64 arm32v6 arm32v7 arm64v8 i386 ppc64le s390x'
-	[debian]='amd64 arm32v5 arm32v7 arm64v8 i386 mips64le ppc64le s390x'
+	#[alpine]='amd64 arm32v6 arm32v7 arm64v8 i386 ppc64le s390x'
+	[alpine]='amd64'
+	#[debian]='amd64 arm32v5 arm32v7 arm64v8 i386 mips64le ppc64le s390x'
+	[debian]='amd64'
 )
 preferredOrder=( alpine debian )
 
