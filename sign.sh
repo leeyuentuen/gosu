@@ -5,7 +5,9 @@ cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
 set -x
 rm -f gosu*.asc SHA256SUMS.asc
+ls -la gosu*
 gpg --batch --generate-key
+ls -la gosu*
 for f in gosu*; do
 	gpg --output "$f.asc" --detach-sign "$f"
 done
