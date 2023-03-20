@@ -30,5 +30,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: gosu-amd64
-          path: |
-            gosu-amd64
+          path: gosu-amd64
