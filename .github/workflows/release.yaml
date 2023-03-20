@@ -26,11 +26,8 @@ jobs:
       - run: go install golang.org/x/vuln/cmd/govulncheck@9bf256343acc20d22586789d07aecf887d8a5aea
       # (update "go-version" above when updating this version)
       - run: for gosu in gosu-*; do govulncheck "$gosu"; done
-      - run: ./sign.sh
-      - run: ls -la gosu-*
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: upload-files
           path: |
             gosu-*
