@@ -34,6 +34,11 @@ High-level steps:
 
 For explicit `Dockerfile` instructions, see [`INSTALL.md`](INSTALL.md).
 
+## How to update the version
+1. Update the version of the library into go.mod
+2. Run `go mod tidy -v`
+3. Commit the change with a new tag. That will create a new release. 
+
 ## Why?
 
 ```console
