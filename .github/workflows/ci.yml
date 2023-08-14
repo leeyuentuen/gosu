@@ -1,7 +1,6 @@
 name: CI
 
 on:
-  workflow_dispatch:
   pull_request:
   push:
   schedule:
@@ -20,9 +19,9 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends binfmt-support qemu-user-static
       - run: ./build.sh
       - run: ./test.sh gosu-amd64
-      #- run: ./test.sh gosu-i386
+      - run: ./test.sh gosu-i386
       - run: ./test.sh --debian gosu-amd64
-      #- run: ./test.sh --debian gosu-i386
+      - run: ./test.sh --debian gosu-i386
       - run: docker build --pull --file hub/Dockerfile.alpine hub
       - run: docker build --pull --file hub/Dockerfile.debian hub
 
